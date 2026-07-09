@@ -35,7 +35,10 @@ export function getAppSession() {
   });
 }
 
-const PBKDF2_ITERATIONS = 210_000;
+// Cloudflare Workers' Web Crypto implementation caps PBKDF2 at 100,000
+// iterations (crypto.subtle.deriveBits throws above that) — unlike Node.js,
+// which allows much higher counts. 100,000 is still solid for PBKDF2-SHA256.
+const PBKDF2_ITERATIONS = 100_000;
 
 function toBase64(bytes: ArrayBuffer | Uint8Array): string {
   const arr = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
