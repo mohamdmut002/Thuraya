@@ -4,30 +4,24 @@ import { toast } from "sonner";
 import { getCurrentUserFn, logoutFn } from "@/lib/auth-fns";
 import { Button } from "@/components/ui/button";
 
-export const Route = createFileRoute("/dashboard")({
+export const Route = createFileRoute("/admin/")({
   head: () => ({
-    meta: [
-      { title: "Client Dashboard — Thuraya Studio" },
-      {
-        name: "description",
-        content: "Track your project's progress, upload files and read updates from the Thuraya team.",
-      },
-    ],
+    meta: [{ title: "Admin — Thuraya Studio" }],
   }),
   beforeLoad: async () => {
     const user = await getCurrentUserFn();
     if (!user) {
       throw redirect({ to: "/login" });
     }
-    if (user.role !== "client") {
-      throw redirect({ to: "/admin" });
+    if (user.role !== "admin") {
+      throw redirect({ to: "/dashboard" });
     }
     return { user };
   },
-  component: Dashboard,
+  component: AdminHome,
 });
 
-function Dashboard() {
+function AdminHome() {
   const { user } = Route.useRouteContext();
   const router = useRouter();
 
@@ -42,8 +36,10 @@ function Dashboard() {
     <div className="container-x py-16 animate-rise">
       <div className="flex items-start justify-between gap-4 mb-10">
         <div>
-          <h1 className="text-3xl text-primary">Welcome, {user.name}</h1>
-          <p className="text-muted-foreground mt-1">{user.email}</p>
+          <h1 className="text-3xl text-primary">Admin</h1>
+          <p className="text-muted-foreground mt-1">
+            Signed in as {user.name} ({user.email})
+          </p>
         </div>
         <Button variant="outline" onClick={onLogout}>
           Sign out
@@ -51,11 +47,11 @@ function Dashboard() {
       </div>
 
       <div className="rounded-2xl border border-border bg-card p-8 ring-soft">
-        <h2 className="text-xl mb-2">Project tracking is coming soon</h2>
+        <h2 className="text-xl mb-2">Authentication is live</h2>
         <p className="text-muted-foreground max-w-xl">
-          You&apos;re securely signed in — this confirms real authentication is working end to
-          end (Cloudflare D1 + encrypted sessions). Project submissions, file uploads, invoices
-          and messaging will be added here next.
+          Role-based access is working — only accounts with role{" "}
+          <code className="rounded bg-muted px-1.5 py-0.5">admin</code> can reach this page.
+          Project management, quotations, invoices and the rest of the admin toolkit come next.
         </p>
       </div>
     </div>
