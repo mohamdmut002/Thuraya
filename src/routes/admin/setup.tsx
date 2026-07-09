@@ -34,8 +34,8 @@ function AdminSetupPage() {
       toast.success("Admin account created.");
       await router.invalidate();
       router.navigate({ to: "/admin" });
-    } catch {
-      toast.error("Something went wrong. Please try again.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }

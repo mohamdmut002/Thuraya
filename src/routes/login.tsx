@@ -32,8 +32,8 @@ function LoginPage() {
       toast.success(`Welcome back, ${res.user.name}`);
       await router.invalidate();
       router.navigate({ to: res.user.role === "admin" ? "/admin" : "/dashboard" });
-    } catch {
-      toast.error("Something went wrong. Please try again.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }

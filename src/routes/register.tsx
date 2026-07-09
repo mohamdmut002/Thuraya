@@ -37,8 +37,8 @@ function RegisterPage() {
       toast.success(`Welcome, ${res.user.name}!`);
       await router.invalidate();
       router.navigate({ to: "/dashboard" });
-    } catch {
-      toast.error("Something went wrong. Please try again.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
