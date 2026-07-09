@@ -12,4 +12,15 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    build: {
+      rolldownOptions: {
+        // "cloudflare:workers" is a runtime-provided module inside the Cloudflare
+        // Workers environment (used in src/lib/db.server.ts to read bindings like
+        // D1). It doesn't exist as a package on disk, so it must be left external
+        // instead of bundled — Vite/Rolldown would otherwise fail to resolve it.
+        external: ["cloudflare:workers"],
+      },
+    },
+  },
 });
