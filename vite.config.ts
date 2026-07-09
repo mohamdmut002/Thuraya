@@ -13,13 +13,17 @@ export default defineConfig({
     server: { entry: "server" },
   },
   vite: {
-    build: {
-      rolldownOptions: {
-        // "cloudflare:workers" is a runtime-provided module inside the Cloudflare
-        // Workers environment (used in src/lib/db.server.ts to read bindings like
-        // D1). It doesn't exist as a package on disk, so it must be left external
-        // instead of bundled — Vite/Rolldown would otherwise fail to resolve it.
-        external: ["cloudflare:workers"],
+    environments: {
+      // Scoped to the ssr environment only — "cloudflare:workers" is used
+      // exclusively by server-only code (src/lib/db.server.ts, auth.server.ts,
+      // auth-fns.ts) and must never affect the client build's own config
+      // (which handles its own dev/production stripping, devtools, etc.).
+      ssr: {
+        build: {
+          rolldownOptions: {
+            external: ["cloudflare:workers"],
+          },
+        },
       },
     },
   },
