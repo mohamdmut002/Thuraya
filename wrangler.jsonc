@@ -12,7 +12,7 @@
     {
       "binding": "DB",
       "database_name": "thuraya-db",
-      "database_id": "REPLACE_WITH_YOUR_DATABASE_ID"
+      "database_id": "199ef59a-a28c-4152-a323-41f8705a8ed7"
     }
   ]
 }
