@@ -3,7 +3,12 @@
   "name": "thuraya-website",
   "main": ".output/server/index.mjs",
   "compatibility_date": "2026-07-09",
-  "compatibility_flags": ["nodejs_compat"], "keep_vars": true,
+  "compatibility_flags": ["nodejs_compat"],
+  // Without this, every Git-triggered deploy resets dashboard-configured
+  // Variables and Secrets (like SESSION_SECRET) back to nothing, because a
+  // plain `wrangler deploy` treats this file as the single source of truth
+  // unless told otherwise.
+  "keep_vars": true,
   "assets": {
     "directory": ".output/public",
     "binding": "ASSETS"
@@ -12,7 +17,7 @@
     {
       "binding": "DB",
       "database_name": "thuraya-db",
-      "database_id": "199ef59a-a28c-4152-a323-41f8705a8ed7"
+      "database_id": "REPLACE_WITH_YOUR_DATABASE_ID"
     }
   ]
 }

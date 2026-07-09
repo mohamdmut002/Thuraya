@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { env } from "cloudflare:workers";
 
 import { getAppSession, hashPassword, verifyPassword } from "./auth.server";
 import type { SessionUser } from "./auth.server";
@@ -128,7 +129,7 @@ const setupAdminSchema = z.object({
 export const setupAdminFn = createServerFn({ method: "POST" })
   .validator(setupAdminSchema)
   .handler(async ({ data }) => {
-    const expectedToken = process.env.ADMIN_SETUP_TOKEN;
+    const expectedToken = env.ADMIN_SETUP_TOKEN;
     if (!expectedToken) {
       return {
         error: "Admin setup is disabled (ADMIN_SETUP_TOKEN is not configured on the server).",

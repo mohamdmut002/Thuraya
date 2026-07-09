@@ -1,3 +1,4 @@
+import { env } from "cloudflare:workers";
 import { useSession } from "@tanstack/react-start/server";
 
 export type SessionUser = {
@@ -10,13 +11,12 @@ export type SessionUser = {
 type SessionData = { user?: SessionUser };
 
 function getSessionSecret(): string {
-  const secret = process.env.SESSION_SECRET;
+  const secret = env.SESSION_SECRET;
   if (!secret || secret.length < 32) {
     throw new Error(
-      "SESSION_SECRET is missing or shorter than 32 characters. Set it in " +
-        ".dev.vars for local dev (`wrangler dev`) and with " +
-        "`wrangler secret put SESSION_SECRET` for production. Generate one " +
-        "with: openssl rand -hex 32",
+      "SESSION_SECRET is missing or shorter than 32 characters. Set it as a Secret in " +
+        "Cloudflare → Worker → Settings → Variables and Secrets (production), and in " +
+        ".dev.vars for local `wrangler dev`. Generate one with: openssl rand -hex 32",
     );
   }
   return secret;

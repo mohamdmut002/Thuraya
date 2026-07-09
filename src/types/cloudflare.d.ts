@@ -25,6 +25,8 @@ interface D1Database {
 
 interface CloudflareEnv {
   DB: D1Database;
+  SESSION_SECRET?: string;
+  ADMIN_SETUP_TOKEN?: string;
 }
 
 // Cloudflare Workers' native "cloudflare:workers" module, available at
